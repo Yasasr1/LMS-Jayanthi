@@ -4,7 +4,7 @@ import { Paper, TextField, Button, FormControl, FormGroup, FormControlLabel, For
 import fire from '../components/firebase';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 
 
@@ -75,6 +75,9 @@ class LoginPage extends Component {
                     type="password"
                     onChange={this.setPassword}
                     />
+                    <br/>
+                    <br/>
+                    <Link to="/register">Create an account</Link>
                     <br/>
                     <br/>
                     <Button onClick={this.loginHandler} variant="contained" color="primary">Login</Button>
