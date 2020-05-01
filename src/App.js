@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import StudentDash from './pages/StudentDash/StudentDash';
+import TeacherDash from './pages/TeacherDash/TeacherDash';
 
 
 class App extends Component {
@@ -24,13 +25,21 @@ class App extends Component {
     </Switch>
 
     if(this.props.uid && this.props.userType === 'student') {
-      console.log("loggedin");
       routes = <Switch>
         <Route path="/" exact component={LoginPage}/>
         <Route path="/register" component={RegisterPage}/>
         <Route path="/dashboard" component={StudentDash}/>
       </Switch>
     }
+
+    if(this.props.uid && this.props.userType === 'teacher') {
+      routes = <Switch>
+        <Route path="/" exact component={LoginPage}/>
+        <Route path="/register" component={RegisterPage}/>
+        <Route path="/dashboard" component={TeacherDash}/>
+      </Switch>
+    }
+
     return (
       <BrowserRouter>
         {routes}

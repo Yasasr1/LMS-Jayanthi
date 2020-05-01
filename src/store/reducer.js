@@ -1,7 +1,12 @@
 
 const initialState = {
     uid: null,
-    userType: null
+    userType: null,
+    teacher: {
+        selectedGrade: '0',
+        selectedSubject: '0',
+        selectedTopic: '0'
+    }
     
 };
 
@@ -11,6 +16,7 @@ const reducer = (state = initialState, action) => {
             localStorage.setItem('uid',action.value.token );
             localStorage.setItem('userType',action.value.userType );
             return {
+                ...state,
                 uid: action.value.token,
                 userType: action.value.userType
             }
@@ -19,12 +25,14 @@ const reducer = (state = initialState, action) => {
             if(uid) {
                 const userType = localStorage.getItem('userType');
                 return {
+                    ...state,
                     uid: uid,
                     userType: userType
                 }
             }
             else {
                 return {
+                    ...state,
                     uid: null,
                     userType: null
                 }
@@ -35,6 +43,14 @@ const reducer = (state = initialState, action) => {
             return {
                 uid: null,
                 userType: null
+            }
+        case 'SET_GRADE_SUBJECT':
+            return {
+                ...state,
+                teacher: {
+                    selectedGrade: action.value.grade,
+                    selectedSubject: action.value.subject
+                }
             }
 
         default:
