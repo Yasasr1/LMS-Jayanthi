@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, Grid } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -18,13 +18,14 @@ class Header extends Component {
         return (
             <AppBar position="static">
                 <Toolbar variant="dense">
-                    <div style={{
-                        position:"relative",
-                        float:"inline-end"
-                    }}>
-                        <Typography variant="caption">UserName</Typography>
-                        <Button onClick={this.handleLogout} color="inherit">Logout</Button>
-                    </div>
+                    <Grid container justify="flex-end" spacing={2}>
+                        <Grid item>
+                            <Typography variant="caption">UserName</Typography>
+                        </Grid>
+                        <Grid item>
+                            <Button onClick={this.handleLogout} color="inherit">Logout</Button>
+                        </Grid>
+                    </Grid> 
                 </Toolbar>
 
             </AppBar>
