@@ -48,8 +48,17 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 teacher: {
+                    ...state.teacher,
                     selectedGrade: action.value.grade,
                     selectedSubject: action.value.subject
+                }
+            }
+        case 'SET_TOPIC':
+            return {
+                ...state,
+                teacher: {
+                    ...state.teacher,
+                    selectedTopic: action.value.topic
                 }
             }
 

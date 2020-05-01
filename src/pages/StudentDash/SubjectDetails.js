@@ -53,8 +53,8 @@ class SubjectDetails extends Component {
                     newTopicIndex: this.props.subject.topics.length
                 })
             }
-            topics = this.props.subject.topics.map((topic => {
-                return <SubjectItem key={topic.topic} title={topic.topic} videos={topic.videos}/>
+            topics = this.props.subject.topics.map(((topic, index) => {
+                return <SubjectItem key={topic.topic} title={topic.topic} videos={topic.videos} topicIndex={index}/>
             }))
         }
         
