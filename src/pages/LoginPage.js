@@ -3,7 +3,6 @@ import { Paper, TextField, Button, FormControl, FormGroup, FormControlLabel, For
 //import background from '../assets/images/login_background.jpg';
 import fire from '../components/firebase';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 
 

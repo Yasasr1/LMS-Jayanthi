@@ -1,6 +1,6 @@
 import React , { Component } from 'react';
 import { Typography, Divider, Button } from '@material-ui/core';
-
+import { connect } from 'react-redux';
 
 import Header from '../../components/Header';
 import SubjectList from '../StudentDash/SubjectList';
@@ -13,20 +13,41 @@ class StudentDash extends Component {
         loading: true,
         subjects: null,
         selectedSubject: null,
-        isSubjectSelected: false
+        isSubjectSelected: false,
+        user: null
     }
 
     componentDidMount() {
         if(this.state.loading === true) {
-            const ref = fire.database().ref('/subjects').once('value').then((snapshot) => {
+            const userRef = fire.database().ref('/users/' + this.props.uid).once('value').then((sp) => {
+                let userData = sp.val()
                 this.setState({
-                    subjects: snapshot.val(),
-                    loading: false
+                    user: userData
                 })
-            })
-            .catch(err => {
-                console.log(err);
-            })
+                console.log(userData);
+                const subjectRef = fire.database().ref('/subject').once('value').then((snapshot) => {
+                    const subs = snapshot.val()[userData.grade]
+                    if(subs != null){
+                        this.setState({
+                            subjects: subs,
+                            loading: false
+                        })
+                    }
+                    else{
+                        this.setState({
+                            loading: false
+                        })
+                    }
+                    //console.log(snapshot.val()[userData.grade]);
+                    //console.log(userData.grade);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+
+            });
+
+
 
         }
     }
@@ -56,7 +77,9 @@ class StudentDash extends Component {
                     {this.state.isSubjectSelected ? <Button onClick={()=> this.setState({isSubjectSelected: false})}>Back</Button> : null}
                     <br/>
                     {
-                    !this.state.isSubjectSelected 
+                      this.state.loading === false && this.state.subjects === null ?   
+                     <p>No subs</p>
+                    : !this.state.isSubjectSelected 
                     ? 
                     <SubjectList subjects={this.state.subjects} selectSubject={(subject) => this.selectSubject(subject)}/> 
                     : 
@@ -68,5 +91,10 @@ class StudentDash extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        uid: state.uid,
+    }
+}
 
-export default StudentDash;
+export default connect(mapStateToProps,null)(StudentDash);

@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Paper, TextField, Button, FormControl, FormGroup, FormControlLabel, FormLabel, Checkbox, FormHelperText} from '@material-ui/core';
+import { Paper, TextField, Button, FormControl, Select, MenuItem, InputLabel} from '@material-ui/core';
 //import background from '../assets/images/login_background.jpg';
 import fire from '../components/firebase';
 import { connect } from 'react-redux';
@@ -13,11 +13,7 @@ class LoginPage extends Component {
         email: '',
         password: '',
         full_name: '',
-        subjects: {
-            Maths: false,
-            Biology: false,
-            Chemestry: false
-        },
+        grade: '',
         user_type: 'student',
         redirect: null
     }
@@ -34,13 +30,9 @@ class LoginPage extends Component {
         this.setState({full_name: event.target.value});
     }
 
-    setSubjects = (event) => {
+    setGrade = (event) => {
         this.setState({
-            ...this.state,
-            subjects: {
-                ...this.state.subjects,
-                [event.target.name]: event.target.checked
-            }
+            grade: event.target.value
         }
         );
     }
@@ -56,11 +48,15 @@ class LoginPage extends Component {
                 uid: id,
                 user_type: this.state.user_type,
                 full_name: this.state.full_name,
-                subjects: this.state.subjects,
+                grade: this.state.grade,
             }
 
-            axios.post('https://project-lms-874a6.firebaseio.com/users.json',newUser)
-            .then(res => {
+            fire.database().ref('/users/' +id).set({
+                user_type: this.state.user_type,
+                full_name: this.state.full_name,
+                grade: this.state.grade
+
+            }).then(res => {
                 console.log(res);
                 this.setState({redirect: <Redirect to="/dashboard"/>})
             })
@@ -83,7 +79,7 @@ class LoginPage extends Component {
                 textAlign: 'center',
                 //backgroundImage: `url(${background})`,
                 //backgroundSize: 'contain'
-                backgroundColor: 'blue'
+                backgroundColor: 'blue',
                 
             }}>
                 {this.state.redirect}
@@ -92,52 +88,63 @@ class LoginPage extends Component {
                     padding: '20px',
                     height: '80%',
                     width: '30%',
-                    display: 'inline-block'
+                    display: 'inline-block',
+
                 }}>
                     <h3>Register</h3>
                     <br/>
                     <br/>
-                    <TextField
-                    id="full_name"
-                    label="Full Name"
-                    onChange={this.setName}
-                    />
-                    <br/>
-                    <TextField
-                    id="email"
-                    label="Email"
-                    onChange={this.setEmail}
-                    />
-                    <br/>
-                    <TextField
-                    id="password"
-                    label="Password"
-                    type="password"
-                    onChange={this.setPassword}
-                    />
-                    <br/>
-                    <br/>
-                    <FormControl component="fieldset" >
-                        <FormLabel component="legend">Subjects</FormLabel>
-                        <FormGroup>
-                        <FormControlLabel
-                            control={<Checkbox checked={this.state.subjects.Maths} onChange={this.setSubjects} name="Maths" />}
-                            label="Maths"
+                    <div style={{
+                        width: '100%',
+                    }}>
+                        <TextField
+                        fullWidth
+                        id="full_name"
+                        label="Full Name"
+                        onChange={this.setName}
                         />
-                        <FormControlLabel
-                            control={<Checkbox checked={this.state.subjects.Biology} onChange={this.setSubjects} name="Biology" />}
-                            label="Biology"
+                        <br/>
+                        <TextField
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        onChange={this.setEmail}
                         />
-                        <FormControlLabel
-                            control={<Checkbox checked={this.state.subjects.Chemestry} onChange={this.setSubjects} name="Chemestry" />}
-                            label="Chemestry"
+                        <br/>
+                        <TextField
+                        fullWidth
+                        id="password"
+                        label="Password"
+                        type="password"
+                        onChange={this.setPassword}
                         />
-                        </FormGroup>
-                        <FormHelperText>Select one or more</FormHelperText>
-                    </FormControl>
-                    <br/>
-                    <br/>
-                    <Button onClick={this.registrationHandler} variant="contained" color="primary">Register</Button>
+                        <br/>
+                        <br/>
+                        <FormControl component="fieldset" style={{width: '100%'}} >
+                            <InputLabel id="demo-simple-select-label">Grade</InputLabel>
+                            <Select
+                            labelId="Grade"
+                            id="grade"
+                            value={this.state.grade}
+                            onChange={this.setGrade}
+                            >
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                                <MenuItem value={6}>6</MenuItem>
+                                <MenuItem value={7}>7</MenuItem>
+                                <MenuItem value={8}>8</MenuItem>
+                                <MenuItem value={9}>9</MenuItem>
+                                <MenuItem value={10}>10</MenuItem>
+                                <MenuItem value={11}>11</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <br/>
+                        <br/>
+                        <Button onClick={this.registrationHandler} variant="contained" color="primary">Register</Button>
+                    </div>
                 </Paper>
             </div>
         );

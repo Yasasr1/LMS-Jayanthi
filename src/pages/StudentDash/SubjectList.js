@@ -19,6 +19,7 @@ class SubjectList extends Component {
                 </GridListTile> 
             })
         }
+        
         return(
            <div>
                <GridList cols={5}>
