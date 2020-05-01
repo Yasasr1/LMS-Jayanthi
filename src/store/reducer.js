@@ -6,7 +6,7 @@ const initialState = {
         selectedGrade: '0',
         selectedSubject: '0',
         selectedTopic: '0'
-    }
+    },
     
 };
 
@@ -41,6 +41,7 @@ const reducer = (state = initialState, action) => {
             localStorage.removeItem('uid');
             localStorage.removeItem('userType');
             return {
+                ...state,
                 uid: null,
                 userType: null
             }

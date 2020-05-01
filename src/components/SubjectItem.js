@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
-import { Paper, Typography, Divider, Button, Grid, Modal, Backdrop, Fade, TextField}  from '@material-ui/core';
+import { Paper, Typography, Divider, Button, Grid, Modal, Backdrop, Fade, TextField, List}  from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ReactPlayer from "react-player";
 import { connect } from 'react-redux';
 
 import fire from '../components/firebase';
+import FileInfo from './FileInfo';
 
 
 class SubjectItem extends Component {
     state = {
         url: '',
         videoModal: false,
-        NewVideoIndex: 0
+        docModal: false,
+        NewVideoIndex: 0,
+        newFilePathIndex: 0,
+        selectedFile: null
     }
 
     componentDidMount() {
@@ -27,6 +31,18 @@ class SubjectItem extends Component {
     handleVideoModalClose = () => {
         this.setState({
             videoModal: false
+        })
+    }
+
+    handleDocModalOpen = () => {
+        this.setState({
+            docModal: true
+        })
+    }
+
+    handleDocModalClose = () => {
+        this.setState({
+            docModal: false
         })
     }
 
@@ -48,6 +64,60 @@ class SubjectItem extends Component {
         })
     }
 
+    selectFileHandler = (event) => {
+        this.setState({
+            selectedFile: event.target.files[0]
+        })
+    }
+
+    //display selected file data
+    fileData = () => { 
+     
+        if (this.state.selectedFile) { 
+            
+          return ( 
+            <div> 
+              <h2>File Details:</h2> 
+              <p>File Name: {this.state.selectedFile.name}</p> 
+              <p>File Type: {this.state.selectedFile.type}</p> 
+              <p> 
+                Last Modified:{" "} 
+                {this.state.selectedFile.lastModifiedDate.toDateString()} 
+              </p> 
+            </div> 
+          ); 
+        } else { 
+          return ( 
+            <div> 
+              <br /> 
+              <h4>Choose before Pressing the Upload button</h4> 
+            </div> 
+          ); 
+        } 
+    }
+
+    uploadFileHandler = () => {
+        //console.log('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex )
+        const storageRef = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name)
+        .put(this.state.selectedFile).then((res) => {
+            //console.log(res);
+            const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name;
+            //console.log(filePath);
+            fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
+                path: filePath,
+                name: this.state.selectedFile.name
+            }).then(res => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
     //console.log(props.videos)
     render(){
         let videos = null;
@@ -61,6 +131,19 @@ class SubjectItem extends Component {
                 return <ReactPlayer key={video.url} style={{padding: '20px'}}
                 url={video.url}/>
             
+            })
+        }
+
+        let files = <p>No files...</p>;
+        if(this.props.files) {
+            if(!this.state.newFilePathIndex){
+                this.setState({
+                    newFilePathIndex: this.props.files.length
+                })
+            }
+            files = this.props.files.map((file) => {
+                console.log(file.name)
+                return <FileInfo key={file.path} name={file.name} path={file.path}/>
             })
         }
         return(
@@ -120,11 +203,52 @@ class SubjectItem extends Component {
                         <Typography variant="h6">Documents</Typography>
                     </Grid>
                     <Grid item md={2}>
-                        <Button style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Upload Document</Button>
+                        <Button onClick={this.handleDocModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Upload Document</Button>
+                        <Modal
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '20px'
+                            }}
+                            open={this.state.docModal}
+                            onClose={this.handleDocModalClose}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                        >
+                            <Fade in={this.state.docModal}>
+                            <Paper style={{
+                                textAlign: 'center',
+                                padding: '20px'
+                            }}>
+                                <h5>Add New Document To The Topic</h5>
+                                <Divider/>
+                                <br/>
+                                <Button
+                                variant="contained"
+                                component="label"
+                                >
+                                Choose File
+                                <input
+                                    type="file"
+                                    onChange={this.selectFileHandler}
+                                    style={{ display: "none" }}
+                                />
+                                </Button>
+                                <br/>
+                                {this.fileData()}
+                                <Divider/>
+                                <br/>
+                                <Button onClick={this.uploadFileHandler}>Upload</Button>
+                            </Paper>
+                            </Fade>
+                        </Modal>
                     </Grid>
                 </Grid>
                 <br/>
-                <p>Display videos here..</p>
+                <List dense>
+                    {files}
+                </List>
             </Paper>
         );
     }
@@ -141,7 +265,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
     return {
         selectedGrade: state.teacher.selectedGrade,
-        selectedSubject: state.teacher.selectedSubject
+        selectedSubject: state.teacher.selectedSubject,
     }
 }
 

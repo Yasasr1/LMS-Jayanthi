@@ -16,12 +16,12 @@ class TeacherDash extends Component {
         selectedGrade: null,
         selectedGradeIndex: null,
         selectedSubjectIndex: null,
-        selectedSubject: null
+        selectedSubject: null,
     }
 
     componentDidMount() {
-        if(this.state.loading === true) {
-            const subjectRef = fire.database().ref('/subject').once('value').then((snapshot) => {
+        
+            fire.database().ref('/subject').on('value',(snapshot) => {
                 const subs = snapshot.val()
                 if(subs != null){
                     this.setState({
@@ -34,11 +34,7 @@ class TeacherDash extends Component {
                         loading: false
                     })
                 }
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        }
+            }) 
     }
 
     gradeSelectHandler(grade) {
@@ -65,9 +61,7 @@ class TeacherDash extends Component {
             selectedSubject: subject,
             isSubjectSelected: true
         })
-
-
-        
+  
     }
 
     render() {

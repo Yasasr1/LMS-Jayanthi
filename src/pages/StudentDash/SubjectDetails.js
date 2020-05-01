@@ -13,6 +13,7 @@ class SubjectDetails extends Component {
         topic: '',
         newTopicIndex: 0
     }
+    
 
     handleModalClose = () => {
         this.setState({
@@ -38,6 +39,7 @@ class SubjectDetails extends Component {
             topic: this.state.topic
         }).then(res => {
             console.log(res);
+            
         })
         .catch(err => {
             console.log(err);
@@ -54,7 +56,7 @@ class SubjectDetails extends Component {
                 })
             }
             topics = this.props.subject.topics.map(((topic, index) => {
-                return <SubjectItem key={topic.topic} title={topic.topic} videos={topic.videos} topicIndex={index}/>
+                return <SubjectItem key={topic.topic} title={topic.topic} videos={topic.videos} files={topic.files} topicIndex={index}/>
             }))
         }
         
@@ -110,5 +112,6 @@ const mapStateToProps = state => {
         selectedSubject: state.teacher.selectedSubject
     }
 }
+
 
 export default connect(mapStateToProps,null)(SubjectDetails);
