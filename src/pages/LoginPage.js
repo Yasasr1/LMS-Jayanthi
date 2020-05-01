@@ -18,6 +18,16 @@ class LoginPage extends Component {
 
     }
 
+    componentDidMount(){
+        this.props.checkLocal();
+        if(this.props.uid != null) {
+          console.log("HEREEEEEE")
+          this.setState({
+            redirect : <Redirect to="/dashboard"/>
+          })
+        }
+      }
+
     setEmail = (event) => {
         this.setState({email: event.target.value});
     }
@@ -42,6 +52,11 @@ class LoginPage extends Component {
     }
 
     render() {
+        let redirect = null;
+        if(this.props.isLoggedin) {
+            redirect = <Redirect to="/dashboard"/>
+        }
+
         return(
             <div style={{
                 width: '100%',
@@ -53,6 +68,7 @@ class LoginPage extends Component {
                 
             }}>
                 {this.state.redirect}
+                {redirect}
                 <Paper square style={{
                     marginTop: '5%',
                     padding: '20px',
@@ -90,8 +106,15 @@ class LoginPage extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (token, userType) => dispatch({type: 'LOGIN', value: {token: token, userType: userType}})
+        onAuth: (token, userType) => dispatch({type: 'LOGIN', value: {token: token, userType: userType}}),
+        checkLocal: () => dispatch({type: 'CHECKLOCAL'})
     };
 }
 
-export default connect(null,mapDispatchToProps)(LoginPage);
+const mapStateToProps = state => {
+    return {
+        isLoggedin: state.uid != null,
+    }
+  }
+
+export default connect(mapStateToProps,mapDispatchToProps)(LoginPage);

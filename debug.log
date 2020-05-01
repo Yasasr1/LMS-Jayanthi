@@ -44,3 +44,11 @@
 [0430/230743.929:ERROR:crash_report_database_win.cc(469)] failed to stat report
 [0430/232243.932:ERROR:crash_report_database_win.cc(469)] failed to stat report
 [0430/232243.932:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0430/233743.938:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0430/233743.938:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0430/235243.940:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0430/235243.940:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0430/235619.252:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
+[0430/235619.284:ERROR:exception_snapshot_win.cc(98)] thread ID 3076 not found in process
+[0501/072614.038:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0501/072614.069:ERROR:crash_report_database_win.cc(469)] failed to stat report

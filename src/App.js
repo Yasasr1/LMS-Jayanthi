@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
-import StudentDash from './pages/StudentDash';
+import StudentDash from './pages/StudentDash/StudentDash';
 
 
 class App extends Component {
+ 
 
+  componentDidMount(){
+    this.props.checkLocal();
+
+  }
   
-
   render() {
     let routes = <Switch>
       <Route path="/" exact component={LoginPage}/>
@@ -42,4 +46,12 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps,null)(App);
+
+const mapDispatchToProps = dispatch => {
+  return {
+      checkLocal: () => dispatch({type: 'CHECKLOCAL'})
+  };
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
