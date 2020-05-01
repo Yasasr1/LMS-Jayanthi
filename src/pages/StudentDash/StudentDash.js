@@ -24,7 +24,7 @@ class StudentDash extends Component {
                 this.setState({
                     user: userData
                 })
-                console.log(userData);
+                //console.log(userData);
                 const subjectRef = fire.database().ref('/subject').once('value').then((snapshot) => {
                     const subs = snapshot.val()[userData.grade]
                     if(subs != null){
@@ -53,10 +53,15 @@ class StudentDash extends Component {
     }
 
     selectSubject(title) {
+        const subject = this.state.subjects.find((sub) => {
+            return sub.title === title;
+        })
+        //console.log(subject);
         this.setState({
-            selectedSubject: title,
+            selectedSubject: subject,
             isSubjectSelected: true
         })
+
 
         
     }
@@ -65,16 +70,18 @@ class StudentDash extends Component {
     render() {
         
         return(
-           <div>
+           <div style={{
+               backgroundColor: '#f0f0f0',
+               height: '100vh'
+           }}>
                <Header {...this.props}/>
                {this.state.redirect}
                <div style={{
                    padding: '50px'
                }}>
-                    <Typography variant="h3" gutterBottom>Welcome,</Typography>
-                    <Divider/>
-                    <br/>
                     {this.state.isSubjectSelected ? <Button onClick={()=> this.setState({isSubjectSelected: false})}>Back</Button> : null}
+                    {!this.state.isSubjectSelected ? <Typography variant="h3" gutterBottom>Welcome,</Typography> : null}
+                    <Divider/>
                     <br/>
                     {
                       this.state.loading === false && this.state.subjects === null ?   
@@ -83,7 +90,7 @@ class StudentDash extends Component {
                     ? 
                     <SubjectList subjects={this.state.subjects} selectSubject={(subject) => this.selectSubject(subject)}/> 
                     : 
-                    <SubjectDetails title={this.state.selectedSubject}/>
+                    <SubjectDetails subject={this.state.selectedSubject}/>
                     }
                </div>
            </div>
