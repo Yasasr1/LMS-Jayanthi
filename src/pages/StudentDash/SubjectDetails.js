@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SubjectItem from '../../components/SubjectItem';
-import { Paper, Typography, Divider, Button, Grid, Modal, Backdrop, Fade, TextField, colors}  from '@material-ui/core';
+import { Paper, Divider, Button, Grid, Modal, Backdrop, Fade, TextField}  from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import { connect } from 'react-redux';
 

@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Paper, TextField, Button, FormControl, Select, MenuItem, InputLabel} from '@material-ui/core';
+import { Button, FormControl, Select, MenuItem, InputLabel} from '@material-ui/core';
 //import background from '../assets/images/login_background.jpg';
 import fire from '../components/firebase';
 import { connect } from 'react-redux';

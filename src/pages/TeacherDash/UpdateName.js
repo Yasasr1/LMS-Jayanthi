@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Paper, Typography, Divider, Button, Grid, Modal, Backdrop, Fade, TextField}  from '@material-ui/core';
+import { Paper, Divider, Button, Grid, Modal, Backdrop, Fade, TextField}  from '@material-ui/core';
 
 import fire from '../../components/firebase';
 

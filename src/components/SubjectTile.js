@@ -5,7 +5,7 @@ const SubjectTile = (props) => {
     console.log(props.title);
     return(
         <Card variant="elevation" style={{
-            maxWidth: '150px',
+            maxWidth: '170px',
             overflow: 'hidden',
             wordWrap: 'break-word',
             textAlign: 'center',

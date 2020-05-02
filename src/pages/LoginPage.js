@@ -1,5 +1,4 @@
 import React , { Component } from 'react';
-import { Paper, TextField, Button, FormControl, FormGroup, FormControlLabel, FormLabel, Checkbox, FormHelperText} from '@material-ui/core';
 //import background from '../assets/images/login_background.jpg';
 import fire from '../components/firebase';
 import { connect } from 'react-redux';

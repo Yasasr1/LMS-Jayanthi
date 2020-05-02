@@ -1,8 +1,7 @@
 import React , { Component } from 'react';
-import axios from 'axios';
 
 import SubjectTile from '../../components/SubjectTile';
-import { GridListTile, GridList } from '@material-ui/core';
+import { GridListTile, GridList, CircularProgress } from '@material-ui/core';
 
 
 class SubjectList extends Component {
@@ -10,7 +9,9 @@ class SubjectList extends Component {
 
 
     render() {
-        let subjects = <p>Loading...</p>;
+        let subjects = <div style={{display: 'flex'}}>
+                <CircularProgress color="secondary"/>
+            </div>;
         if(this.props.subjects != null) {
             let array = Array.from(this.props.subjects);
             subjects = array.map(subject => {

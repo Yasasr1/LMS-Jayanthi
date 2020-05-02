@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Typography, Divider, Button, GridList, GridListTile, Grid } from '@material-ui/core';
+import { Typography, Divider, Button, GridList, GridListTile, Grid, CircularProgress } from '@material-ui/core';
+import FacebookIcon from '@material-ui/icons/Facebook';
 import { connect } from 'react-redux';
 
 import Header from '../../components/Header';
@@ -48,8 +49,10 @@ class TeacherDash extends Component {
         })
     }
 
+    
     subjectSelectHandler(title) {
         console.log(title);
+        //// eslint-disable-next-line
         const subject = this.state.selectedGrade.find((sub, index) => {
             if(sub.title === title.title) {
                 this.setState({selectedSubjectIndex: index});
@@ -71,9 +74,12 @@ class TeacherDash extends Component {
             this.props.setGradeSubject(this.state.selectedGradeIndex, this.state.selectedSubjectIndex);
         }
 
-        let data = <p>loading...</p>
+        let data = <div style={{display: 'flex'}}>
+                    <CircularProgress color="secondary"/>
+                   </div>;
 
         if(this.state.subjects) {
+            //// eslint-disable-next-line
             let array = Array.from(this.state.subjects);
             data = array.map((grade, index) => {
                 //because in database grade starts from index 1
@@ -101,7 +107,8 @@ class TeacherDash extends Component {
             <div>
                 <Header {...this.props}/>
                 <div style={{
-                   padding: '50px'
+                   padding: '50px',
+                   minHeight: '1000px'
                }}>
                     {this.state.isSubjectSelected ? <Button onClick={()=> this.setState({isSubjectSelected: false})}>Back</Button> : null}
                     {!this.state.isSubjectSelected ? <Typography variant="h3" gutterBottom>Dashboard</Typography> : null}
@@ -109,7 +116,7 @@ class TeacherDash extends Component {
                     <br/>
                     <Divider/>
                     <br/>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={0}>
                         <Grid item md={9}>
                             { !this.state.isSubjectSelected ? 
                             <GridList cols={3}>
@@ -121,13 +128,33 @@ class TeacherDash extends Component {
                         <Grid item md={1}>
                             <Divider orientation="vertical"/>
                         </Grid>
-                        <Grid item md={2}>
+                        <Grid item md={1}>
                             <UpdateName/>
                         </Grid>
                     </Grid>
-                    
                     <br/>
                </div>
+               <footer style={{
+                    left: '0',
+                    bottom:' 0',
+                    width: '100%',
+                    backgroundColor: '#993600',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    padding: '10px'
+                }}>
+                        <Grid container>
+                            <Grid item md={12}>
+                                <Typography style={{float:'left'}} variant="h5">Contact Us</Typography>
+                            </Grid>
+                            <Grid item md={12}>
+                                <Button style={{float:'left'}} startIcon={<FacebookIcon/>}>Facebook</Button>
+                            </Grid>
+                            <Grid item md={12}>
+                                <p>Name | All Rights Reserved</p>
+                            </Grid>
+                        </Grid>
+                </footer>
             </div>
         );
     }
