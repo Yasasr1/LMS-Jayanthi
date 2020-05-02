@@ -34,7 +34,7 @@ class TeacherDash extends Component {
                         loading: false
                     })
                 }
-            }) 
+            })
     }
 
     gradeSelectHandler(grade) {

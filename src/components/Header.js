@@ -6,7 +6,25 @@ import fire from './firebase';
 
 
 class Header extends Component {
-    
+    state = {
+        username: ''
+    }
+
+    componentDidMount(){
+
+        fire.auth().onAuthStateChanged((user) => {
+            if(user){
+                if(user.displayName){
+                    this.setState({
+                        username: user.displayName
+                    })
+                }
+            }
+            else{
+                console.log("User not signed in")
+            }
+        })
+    }
 
     handleLogout = () => {
         fire.auth().signOut().then((res) => {
@@ -25,7 +43,7 @@ class Header extends Component {
                 <Toolbar variant="dense">
                     <Grid container justify="flex-end" spacing={2}>
                         <Grid item>
-                            <Typography variant="caption">UserName</Typography>
+                            <Typography variant="overline">{this.state.username}</Typography>
                         </Grid>
                         <Grid item>
                             <Button onClick={this.handleLogout} color="inherit">Logout</Button>
