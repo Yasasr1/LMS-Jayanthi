@@ -39,7 +39,9 @@ class Header extends Component {
 
     render(){
         return (
-            <AppBar position="static">
+            <AppBar position="static" style={{
+                backgroundColor: '#a62505'
+            }}>
                 <Toolbar variant="dense">
                     <Grid container justify="flex-end" spacing={2}>
                         <Grid item>
