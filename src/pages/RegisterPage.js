@@ -5,6 +5,7 @@ import fire from '../components/firebase';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import "./LoginPage.css";
 
 
 
@@ -79,19 +80,99 @@ class LoginPage extends Component {
                 textAlign: 'center',
                 //backgroundImage: `url(${background})`,
                 //backgroundSize: 'contain'
-                backgroundColor: 'blue',
+                // backgroundColor: 'blue',
                 
             }}>
                 {this.state.redirect}
-                <Paper square style={{
+                {/* <Paper square style={{
                     marginTop: '5%',
                     padding: '20px',
                     height: '80%',
                     width: '30%',
                     display: 'inline-block',
 
-                }}>
-                    <h3>Register</h3>
+                }}> */}
+
+
+
+<div id="register" className="banner">
+  {/* <h3 className="text-center text-black pt-5">Login form</h3> */}
+  <div className="container">
+    <div id="login-row" className="row justify-content-center align-items-center">
+      <div id="login-column" className="col-md-6">
+        <div id="login-box" className="col-md-12">
+         
+            <h3 className="text-center text-white pt-3">LMS Registration</h3>
+            <div className="form-group">
+              <label htmlFor="fname" className="text-white ">Full Name:</label><br />
+              <input type="text"
+                     id="full_name"
+                     label="Full Name"
+                     onChange={this.setName}
+                    />
+            </div>
+            <div className="form-group">
+              <label htmlFor="username" className="text-white ">Email:</label><br />
+              <input type="email"
+                    id="email"
+                    label="Email"
+                    onChange={this.setEmail}
+                    />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password" className="text-white">Password:</label><br />
+              <input type="password" id="password"
+                    label="Password"
+                    type="password"
+                    onChange={this.setPassword} />
+            </div>
+            <div className="form-group">
+            <label id="demo-simple-select-label" className="text-white">Grade : </label><br />
+            <FormControl component="fieldset" style={{width: '100%'}} >
+                            <Select
+                            labelId="Grade"
+                            id="grade"
+                            value={this.state.grade}
+                            onChange={this.setGrade}
+                            >
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                                <MenuItem value={6}>6</MenuItem>
+                                <MenuItem value={7}>7</MenuItem>
+                                <MenuItem value={8}>8</MenuItem>
+                                <MenuItem value={9}>9</MenuItem>
+                                <MenuItem value={10}>10</MenuItem>
+                                <MenuItem value={11}>11</MenuItem>
+                            </Select>
+                        </FormControl>
+                </div>
+            <div className="form-group">
+              <Button onClick={this.registrationHandler} variant="contained" color="primary">Register</Button>
+            </div>
+            
+       
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    {/* <h3>Register</h3>
                     <br/>
                     <br/>
                     <div style={{
@@ -144,8 +225,8 @@ class LoginPage extends Component {
                         <br/>
                         <br/>
                         <Button onClick={this.registrationHandler} variant="contained" color="primary">Register</Button>
-                    </div>
-                </Paper>
+                    </div> */}
+                {/* </Paper> */}
             </div>
         );
     }

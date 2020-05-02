@@ -4,6 +4,8 @@ import { Paper, TextField, Button, FormControl, FormGroup, FormControlLabel, For
 import fire from '../components/firebase';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
+import "./LoginPage.css";
+import Navbar from "../components/Navbar"
 
 
 
@@ -57,25 +59,73 @@ class LoginPage extends Component {
         }
 
         return(
-            <div style={{
+            <div  style={{
                 width: '100%',
                 height: '100vh',
                 textAlign: 'center',
                 //backgroundImage: `url(${background})`,
                 //backgroundSize: 'contain'
-                backgroundColor: 'cyan'
+                // backgroundColor: 'cyan'
                 
             }}>
+
+                
+                <Navbar/>
+                
                 {this.state.redirect}
                 {redirect}
-                <Paper square style={{
+                {/* <Paper square style={{
                     marginTop: '5%',
                     padding: '20px',
                     height: '80%',
                     width: '30%',
                     display: 'inline-block'
-                }}>
-                    <h3>Login</h3>
+                }}> */}
+
+
+<div id="login" className="banner">
+  {/* <h3 className="text-center text-black pt-5">Login form</h3> */}
+  <div className="container">
+    <div id="login-row" className="row justify-content-center align-items-center">
+      <div id="login-column" className="col-md-6">
+        <div id="login-box" className="col-md-12">
+         
+            <h3 className="text-center text-white pt-3">Welcome To LMS</h3>
+            <div className="form-group">
+              <label htmlFor="username" className="text-white ">Email:</label><br />
+              <input type="email"
+                    id="email"
+                    label="Email"
+                    onChange={this.setEmail}
+                    />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password" className="text-white">Password:</label><br />
+              <input type="password" id="password"
+                    label="Password"
+                    type="password"
+                    onChange={this.setPassword} />
+            </div>
+            <div className="form-group">
+            <div id="register-link" className="text-center">
+                   <Link to="/register">Create an account</Link>
+            </div>
+              <label htmlFor="remember-me" className="text-info"><span>Remember me</span>&nbsp;<span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
+              <Button onClick={this.loginHandler} variant="contained" color="primary">Login</Button>
+            </div>
+            
+       
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+                    {/* <h3>Login</h3>
                     <br/>
                     <br/>
                     <TextField
@@ -96,7 +146,7 @@ class LoginPage extends Component {
                     <br/>
                     <br/>
                     <Button onClick={this.loginHandler} variant="contained" color="primary">Login</Button>
-                </Paper>
+                </Paper> */}
             </div>
         );
     }
