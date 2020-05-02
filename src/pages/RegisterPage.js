@@ -45,12 +45,14 @@ class LoginPage extends Component {
             var id = user.uid
             this.props.onAuth(id, this.state.user_type);
 
-            const newUser = {
-                uid: id,
-                user_type: this.state.user_type,
-                full_name: this.state.full_name,
-                grade: this.state.grade,
-            }
+            //update users username on firebase auth server
+            user.updateProfile({
+                displayName: this.state.full_name
+            }).then((res) => {
+                console.log(res);
+            }).catch((err => {
+                console.log(err);
+            }));
 
             fire.database().ref('/users/' +id).set({
                 user_type: this.state.user_type,

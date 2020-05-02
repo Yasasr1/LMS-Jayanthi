@@ -14,7 +14,7 @@ class LoginPage extends Component {
     state = {
         email: '',
         password: '',
-        userType: 'student',
+        userType: '',
         redirect: null
 
     }
@@ -43,8 +43,14 @@ class LoginPage extends Component {
             console.log(res);
             var user = fire.auth().currentUser;
             var id = user.uid
-            this.props.onAuth(id, this.state.userType);
-            this.setState({redirect: <Redirect to="/dashboard"/>})
+
+            const userRef = fire.database().ref('/users/' + id).once('value').then((snapshot) => {
+                this.setState({
+                    userType: snapshot.val().user_type
+                });
+                this.props.onAuth(id, this.state.userType);
+                this.setState({redirect: <Redirect to="/dashboard"/>})
+            })
         })
         .catch(err => {
             console.log(err);

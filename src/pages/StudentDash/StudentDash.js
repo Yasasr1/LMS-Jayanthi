@@ -68,14 +68,13 @@ class StudentDash extends Component {
     
 
     render() {
-        
+    
         return(
            <div style={{
                backgroundColor: '#f0f0f0',
                height: '100vh'
            }}>
                <Header {...this.props}/>
-               {this.state.redirect}
                <div style={{
                    padding: '50px'
                }}>

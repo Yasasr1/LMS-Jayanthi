@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AppBar, Toolbar, Typography, Button, Grid } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import fire from './firebase';
 
 
 
@@ -9,6 +9,11 @@ class Header extends Component {
     
 
     handleLogout = () => {
+        fire.auth().signOut().then((res) => {
+            console.log("sign Out: "+res);
+        }).catch((err) =>{
+            console.log(err);
+        })
         this.props.onLogout();
         this.props.history.replace('/');
     

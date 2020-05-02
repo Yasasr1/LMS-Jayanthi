@@ -15,7 +15,7 @@ class SubjectList extends Component {
             let array = Array.from(this.props.subjects);
             subjects = array.map(subject => {
                 return <GridListTile key={subject.title}>
-                    <SubjectTile selector={this.props.selectSubject} title={subject.title}/>
+                    <SubjectTile isGrade={false} selector={this.props.selectSubject} title={subject.title}/>
                 </GridListTile> 
             })
         }
