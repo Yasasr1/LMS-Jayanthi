@@ -5,6 +5,7 @@ import fire from '../components/firebase';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import "./LoginPage.css";
+import logo from "../../src/assets/images/scl.jpeg"
 
 
 
@@ -89,43 +90,81 @@ class LoginPage extends Component {
                 }}> */}
 
 
-<div id="login" className="banner">
-  {/* <h3 className="text-center text-black pt-5">Login form</h3> */}
-  <div className="container">
-    <div id="login-row" className="row justify-content-center align-items-center">
-      <div id="login-column" className="col-md-6">
-        <div id="login-box" className="col-md-12">
-         
-            <h3 className="text-center text-white pt-3">Welcome To LMS</h3>
-            <div className="form-group">
-              <label htmlFor="username" className="text-white ">Email:</label><br />
-              <input type="email"
+
+<div id="login" className="banner h-100 ">
+  <div className="d-flex justify-content-center h-100">
+    <div className="user_card">
+      <div className="d-flex justify-content-center">
+        <div className="brand_logo_container">
+          <img src={logo} className="brand_logo" alt="Logo" />
+        </div>
+      </div>
+      <div className="d-flex justify-content-center form_container">
+        <form>
+          <div className="input-group mb-3">
+            <div className="input-group-append">
+              <span className="input-group-text"><i className="fas fa-at" /></span>
+            </div>
+            <input type="email"
                     id="email"
                     label="Email"
-                    onChange={this.setEmail}
-                    />
+                    onChange={this.setEmail} className="form-control input_user" placeholder="student@gmail.com" />
+          </div>
+          <div className="input-group mb-2">
+            <div className="input-group-append">
+              <span className="input-group-text"><i className="fas fa-key" /></span>
             </div>
-            <div className="form-group">
-              <label htmlFor="password" className="text-white">Password:</label><br />
-              <input type="password" id="password"
+            <input type="password" id="password"
                     label="Password"
                     type="password"
-                    onChange={this.setPassword} />
+                    onChange={this.setPassword} className="form-control input_pass" placeholder="password" />
+          </div>
+          <div className="form-group">
+            <div className="custom-control custom-checkbox">
+              <input type="checkbox" className="custom-control-input" id="customControlInline" />
+              <label className="custom-control-label text-white" htmlFor="customControlInline">Remember me</label>
             </div>
-            <div className="form-group">
-            <div id="register-link" className="text-center">
-                   <Link to="/register">Create an account</Link>
-            </div>
-              <label htmlFor="remember-me" className="text-info"><span>Remember me</span>&nbsp;<span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
-              <Button onClick={this.loginHandler} variant="contained" color="primary">Login</Button>
-            </div>
-            
-       
+          </div>
+          <div className="d-flex justify-content-center mt-3 login_container">
+            <button type="button" onClick={this.loginHandler} className="btn login_btn">Login</button>
+          </div>
+        </form>
+      </div>
+      <div className="mt-4">
+        <div className="d-flex justify-content-center links text-white">
+          Don't have an account? <Link to="/register">Create an account</Link>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

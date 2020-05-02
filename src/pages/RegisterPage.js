@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import "./LoginPage.css";
+import logo from "../../src/assets/images/scl.jpeg"
 
 
 
@@ -96,41 +97,48 @@ class LoginPage extends Component {
                 }}> */}
 
 
-
-<div id="register" className="banner">
-  {/* <h3 className="text-center text-black pt-5">Login form</h3> */}
-  <div className="container">
-    <div id="login-row" className="row justify-content-center align-items-center">
-      <div id="login-column" className="col-md-6">
-        <div id="login-box" className="col-md-12">
-         
-            <h3 className="text-center text-white pt-3">LMS Registration</h3>
-            <div className="form-group">
-              <label htmlFor="fname" className="text-white ">Full Name:</label><br />
-              <input type="text"
+<div id="register" className="banner h-100 ">
+  <div className="d-flex justify-content-center h-100">
+    <div className="user_card">
+      <div className="d-flex justify-content-center">
+        <div className="brand_logo_container">
+          <img src={logo} className="brand_logo" alt="Logo" />
+        </div>
+      </div>
+      <div className="d-flex justify-content-center form_container">
+        <form>
+          <div className="input-group mb-3">
+            <div className="input-group-append">
+              <span className="input-group-text"><i className="fas fa-user" /></span>
+            </div>
+            <input type="text"
                      id="full_name"
                      label="Full Name"
-                     onChange={this.setName}
-                    />
+                     onChange={this.setName} className="form-control input_user" placeholder="Full Name" />
+          </div>
+
+          <div className="input-group mb-3">
+            <div className="input-group-append">
+              <span className="input-group-text"><i className="fas fa-at" /></span>
             </div>
-            <div className="form-group">
-              <label htmlFor="username" className="text-white ">Email:</label><br />
-              <input type="email"
+            <input type="email"
                     id="email"
                     label="Email"
-                    onChange={this.setEmail}
-                    />
+                    onChange={this.setEmail} className="form-control input_user" placeholder="student@gmail.com" />
+          </div>
+          <div className="input-group mb-2">
+            <div className="input-group-append">
+              <span className="input-group-text"><i className="fas fa-key" /></span>
             </div>
-            <div className="form-group">
-              <label htmlFor="password" className="text-white">Password:</label><br />
-              <input type="password" id="password"
+            <input type="password" id="password"
                     label="Password"
                     type="password"
-                    onChange={this.setPassword} />
-            </div>
-            <div className="form-group">
-            <label id="demo-simple-select-label" className="text-white">Grade : </label><br />
-            <FormControl component="fieldset" style={{width: '100%'}} >
+                    onChange={this.setPassword} className="form-control input_pass" placeholder="password" />
+          </div>
+          <div className="form-group">
+
+            <FormControl  className="input-group-text" component="fieldset" style={{width: '100%'}} >
+            <InputLabel style={{ disableAnimation: false }} disableAnimation={false}  className="text-white">SELECT YOUR GRADE *  </InputLabel>
                             <Select
                             labelId="Grade"
                             id="grade"
@@ -151,16 +159,24 @@ class LoginPage extends Component {
                             </Select>
                         </FormControl>
                 </div>
-            <div className="form-group">
-              <Button onClick={this.registrationHandler} variant="contained" color="primary">Register</Button>
-            </div>
-            
-       
-        </div>
+          <div className="d-flex justify-content-center mt-3 login_container">
+          <Button onClick={this.registrationHandler} className="btn login_btn">Register</Button>
+          </div>
+        </form>
+      </div>
+      <div className="mt-4">
+        
       </div>
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
 
 
 
