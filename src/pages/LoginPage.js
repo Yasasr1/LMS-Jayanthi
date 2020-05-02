@@ -5,7 +5,7 @@ import fire from '../components/firebase';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import "./LoginPage.css";
-import Navbar from "../components/Navbar"
+
 
 
 
@@ -76,7 +76,7 @@ class LoginPage extends Component {
             }}>
 
                 
-                <Navbar/>
+                
                 
                 {this.state.redirect}
                 {redirect}
