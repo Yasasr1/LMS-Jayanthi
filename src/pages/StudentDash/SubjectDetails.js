@@ -61,7 +61,7 @@ class SubjectDetails extends Component {
                 })
             }
             topics = this.props.subject.topics.map(((topic, index) => {
-                return <SubjectItem key={topic.topic} title={topic.topic} videos={topic.videos} files={topic.files} topicIndex={index}/>
+                return <SubjectItem userType={this.props.userType} key={topic.topic} title={topic.topic} videos={topic.videos} files={topic.files} topicIndex={index}/>
             }))
         }
         
@@ -74,7 +74,8 @@ class SubjectDetails extends Component {
                         <h2>{this.props.subject.title}</h2>
                     </Grid>
                     <Grid item md={2}>
-                        <Button onClick={this.handleModalOpen} startIcon={<CreateIcon />} variant="contained" color="primary">New Topic</Button>
+                        {this.props.userType === 'teacher' ? <Button onClick={this.handleModalOpen} startIcon={<CreateIcon />} variant="contained" color="primary">New Topic</Button>
+                         : null }
                         <Modal
                             style={{
                                 display: 'flex',
@@ -114,7 +115,8 @@ class SubjectDetails extends Component {
 const mapStateToProps = state => {
     return {
         selectedGrade: state.teacher.selectedGrade,
-        selectedSubject: state.teacher.selectedSubject
+        selectedSubject: state.teacher.selectedSubject,
+        userType: state.userType
     }
 }
 

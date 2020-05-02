@@ -171,7 +171,8 @@ class SubjectItem extends Component {
                         <Typography variant="h6">Videos</Typography>
                     </Grid>
                     <Grid item md={2}>
-                        <Button onClick={this.handleVideoModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Add Video</Button>
+                        {this.props.userType === 'teacher' ? <Button onClick={this.handleVideoModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Add Video</Button>
+                        : null}
                         <Modal
                             style={{
                                 display: 'flex',
@@ -195,7 +196,7 @@ class SubjectItem extends Component {
                                 <TextField onChange={this.setUrl} fullWidth label="Youtube Url"/>
                                 <br/>
                                 <br/>
-                                <Button onClick={this.addVideoHandler} variant="contained" color="primary">Add Video</Button>
+                                {this.props.userType === 'teacher' ? <Button onClick={this.addVideoHandler} variant="contained" color="primary">Add Video</Button> : null}
                             </Paper>
                             </Fade>
                         </Modal>
@@ -212,7 +213,8 @@ class SubjectItem extends Component {
                         <Typography variant="h6">Documents</Typography>
                     </Grid>
                     <Grid item md={2}>
-                        <Button onClick={this.handleDocModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Upload Document</Button>
+                        {this.props.userType === 'teacher' ? <Button onClick={this.handleDocModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Upload Document</Button> :
+                        null}
                         <Modal
                             style={{
                                 display: 'flex',

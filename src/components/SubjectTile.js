@@ -7,12 +7,10 @@ const SubjectTile = (props) => {
         <Card variant="elevation" style={{
             maxWidth: '170px',
             overflow: 'hidden',
-            wordWrap: 'break-word',
             textAlign: 'center',
             backgroundImage: 'linear-gradient(to bottom right, #8a2a19, #e09200)',
             cursor: 'pointer',
             color: 'white',
-            fontWeight: 'bold'
         }} onClick={() => props.selector(props.title)}>
             <CardContent>
                 {props.isGrade
