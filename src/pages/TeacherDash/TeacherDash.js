@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Typography, Divider, Button, GridList, GridListTile } from '@material-ui/core';
+import { Typography, Divider, Button, GridList, GridListTile, Grid } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 import Header from '../../components/Header';
 import fire from '../../components/firebase';
 import SubjectTile from '../../components/SubjectTile';
 import SubjectDetails from '../StudentDash/SubjectDetails';
+import UpdateName from '../TeacherDash/UpdateName';
 
 class TeacherDash extends Component {
     state = {
@@ -34,7 +35,7 @@ class TeacherDash extends Component {
                         loading: false
                     })
                 }
-            }) 
+            })
     }
 
     gradeSelectHandler(grade) {
@@ -108,12 +109,23 @@ class TeacherDash extends Component {
                     <br/>
                     <Divider/>
                     <br/>
-                    { !this.state.isSubjectSelected ? 
-                    <GridList cols={3}>
-                        {data}
-                    </GridList>
-                    : <div>{data}</div>
-                    }
+                    <Grid container spacing={2}>
+                        <Grid item md={9}>
+                            { !this.state.isSubjectSelected ? 
+                            <GridList cols={3}>
+                                {data}
+                            </GridList>
+                            : <div>{data}</div>
+                            }
+                        </Grid>
+                        <Grid item md={1}>
+                            <Divider orientation="vertical"/>
+                        </Grid>
+                        <Grid item md={2}>
+                            <UpdateName/>
+                        </Grid>
+                    </Grid>
+                    
                     <br/>
                </div>
             </div>

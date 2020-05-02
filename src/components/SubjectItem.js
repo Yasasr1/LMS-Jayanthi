@@ -52,12 +52,17 @@ class SubjectItem extends Component {
         })
     }
 
+    //used to add video links
     addVideoHandler = () => {
         //console.log('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/videos/' + this.state.NewVideoIndex)
         fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/videos/' + this.state.NewVideoIndex ).set({
             url: this.state.url
         }).then(res => {
-            console.log(res);
+            alert("Video added succesfully!");
+            this.setState({
+                videoModal: false
+            })
+            window.location.reload(true);
         })
         .catch(err => {
             console.log(err);
@@ -107,14 +112,18 @@ class SubjectItem extends Component {
                 path: filePath,
                 name: this.state.selectedFile.name
             }).then(res => {
-                console.log(res);
+                alert("file uploaded successfully");
+                this.setState({
+                    docModal: false
+                })
+                window.location.reload(true);
             })
             .catch(err => {
                 console.log(err);
             })
 
         }).catch((err) => {
-            console.log(err);
+            alert("Error: Upload failed!");
         });
     }
 

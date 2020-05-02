@@ -9,7 +9,10 @@ const SubjectTile = (props) => {
             overflow: 'hidden',
             wordWrap: 'break-word',
             textAlign: 'center',
-            backgroundColor: 'gray'
+            backgroundImage: 'linear-gradient(to bottom right, #8a2a19, #e09200)',
+            cursor: 'pointer',
+            color: 'white',
+            fontWeight: 'bold'
         }} onClick={() => props.selector(props.title)}>
             <CardContent>
                 {props.isGrade

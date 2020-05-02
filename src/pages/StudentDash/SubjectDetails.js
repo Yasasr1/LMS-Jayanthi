@@ -38,11 +38,16 @@ class SubjectDetails extends Component {
         fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.state.newTopicIndex).set({
             topic: this.state.topic
         }).then(res => {
-            console.log(res);
+            alert("New topic added successfully");
+            this.setState({
+                openModal: false
+            })
+            window.location.reload(true);
+
             
         })
         .catch(err => {
-            console.log(err);
+            alert("Error: Failed to add topic !");
         })
     }
 
