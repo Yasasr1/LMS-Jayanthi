@@ -23,7 +23,7 @@ class SubjectList extends Component {
         
         return(
            <div>
-               <GridList cols={5}>
+               <GridList cols={3}>
                    {subjects}
                </GridList>
            </div>

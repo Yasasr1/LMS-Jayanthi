@@ -5,12 +5,14 @@ const SubjectTile = (props) => {
     console.log(props.title);
     return(
         <Card variant="elevation" style={{
-            maxWidth: '170px',
-            overflow: 'hidden',
+            maxWidth: '150px',
+            overflow: 'scroll',
             textAlign: 'center',
             backgroundImage: 'linear-gradient(to bottom right, #8a2a19, #e09200)',
             cursor: 'pointer',
             color: 'white',
+            fontWeight: 'bold',
+            fontSize: '10'
         }} onClick={() => props.selector(props.title)}>
             <CardContent>
                 {props.isGrade
