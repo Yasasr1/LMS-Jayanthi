@@ -105,7 +105,7 @@ class TeacherDash extends Component {
         }
         return(
             <div>
-                <Header {...this.props}/>
+                <Header isLoggedIn={true} {...this.props}/>
                 <div style={{
                    padding: '50px',
                    minHeight: '1000px'
@@ -138,7 +138,7 @@ class TeacherDash extends Component {
                     left: '0',
                     bottom:' 0',
                     width: '100%',
-                    backgroundColor: '#993600',
+                    backgroundColor: '	#5a175d',
                     textAlign: 'center',
                     fontWeight: 'bold',
                     padding: '10px'

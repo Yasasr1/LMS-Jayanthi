@@ -15,19 +15,8 @@ class LoginPage extends Component {
         email: '',
         password: '',
         userType: '',
-        redirect: null
 
     }
-
-    componentDidMount(){
-        this.props.checkLocal();
-        if(this.props.uid != null) {
-          console.log("HEREEEEEE")
-          this.setState({
-            redirect : <Redirect to="/dashboard"/>
-          })
-        }
-      }
 
     setEmail = (event) => {
         this.setState({email: event.target.value});
@@ -49,7 +38,7 @@ class LoginPage extends Component {
                     userType: snapshot.val().user_type
                 });
                 this.props.onAuth(id, this.state.userType);
-                this.setState({redirect: <Redirect to="/dashboard"/>})
+                this.props.history.replace('/dashboard');
             })
         })
         .catch(err => {
@@ -69,24 +58,10 @@ class LoginPage extends Component {
                 width: '100%',
                 height: '100vh',
                 textAlign: 'center',
-                //backgroundImage: `url(${background})`,
-                //backgroundSize: 'contain'
-                // backgroundColor: 'cyan'
-                
+              
             }}>
-
-                
-                
-                
-                {this.state.redirect}
                 {redirect}
-                {/* <Paper square style={{
-                    marginTop: '5%',
-                    padding: '20px',
-                    height: '80%',
-                    width: '30%',
-                    display: 'inline-block'
-                }}> */}
+      
 
 
 
@@ -138,59 +113,6 @@ class LoginPage extends Component {
   </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    {/* <h3>Login</h3>
-                    <br/>
-                    <br/>
-                    <TextField
-                    id="email"
-                    label="Email"
-                    onChange={this.setEmail}
-                    />
-                    <br/>
-                    <TextField
-                    id="password"
-                    label="Password"
-                    type="password"
-                    onChange={this.setPassword}
-                    />
-                    <br/>
-                    <br/>
-                    <Link to="/register">Create an account</Link>
-                    <br/>
-                    <br/>
-                    <Button onClick={this.loginHandler} variant="contained" color="primary">Login</Button>
-                </Paper> */}
             </div>
         );
     }
@@ -208,6 +130,6 @@ const mapStateToProps = state => {
     return {
         isLoggedin: state.uid != null,
     }
-  }
+}
 
 export default connect(mapStateToProps,mapDispatchToProps)(LoginPage);

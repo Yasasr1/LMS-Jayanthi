@@ -19,22 +19,16 @@ class App extends Component {
   
   render() {
     let routes = <Switch>
-      <Route path="/" exact component={LoginPage}/>
+      <Route path="/" exact component={StudentDash}/>
+      <Route path="/login" exact component={LoginPage}/>
       <Route path="/register" component={RegisterPage}/>
       <Route path="/dashboard" render={() => <h1>Not Found</h1>} />
     </Switch>
 
-    if(this.props.uid && this.props.userType === 'student') {
-      routes = <Switch>
-        <Route path="/" exact component={LoginPage}/>
-        <Route path="/register" component={RegisterPage}/>
-        <Route path="/dashboard" component={StudentDash}/>
-      </Switch>
-    }
-
     if(this.props.uid && this.props.userType === 'teacher') {
       routes = <Switch>
-        <Route path="/" exact component={LoginPage}/>
+        <Route path="/" exact component={StudentDash}/>
+        <Route path="/login" exact component={LoginPage}/>
         <Route path="/register" component={RegisterPage}/>
         <Route path="/dashboard" component={TeacherDash}/>
       </Switch>

@@ -3,8 +3,6 @@ import { Button, FormControl, Select, MenuItem, InputLabel} from '@material-ui/c
 //import background from '../assets/images/login_background.jpg';
 import fire from '../components/firebase';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import { Redirect } from 'react-router-dom';
 import "./LoginPage.css";
 import logo from "../../src/assets/images/scl.jpeg"
 
@@ -16,7 +14,7 @@ class LoginPage extends Component {
         password: '',
         full_name: '',
         grade: '',
-        user_type: 'student',
+        user_type: 'teacher',
         redirect: null
     }
 
@@ -44,7 +42,7 @@ class LoginPage extends Component {
         .then((res) => {
             var user = fire.auth().currentUser;
             var id = user.uid
-            this.props.onAuth(id, this.state.user_type);
+            //this.props.onAuth(id, this.state.user_type);
 
             //update users username on firebase auth server
             user.updateProfile({
@@ -62,7 +60,6 @@ class LoginPage extends Component {
 
             }).then(res => {
                 console.log(res);
-                this.setState({redirect: <Redirect to="/dashboard"/>})
             })
             .catch(err => {
                 console.log(err);

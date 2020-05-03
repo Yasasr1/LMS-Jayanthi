@@ -40,7 +40,7 @@ class Header extends Component {
     render(){
         return (
             <AppBar position="static" style={{
-                backgroundColor: '#a62505'
+                backgroundColor: '#5a175d'
             }}>
                 <Toolbar variant="dense">
                     <Grid container justify="flex-end" spacing={2}>
@@ -48,7 +48,11 @@ class Header extends Component {
                             <Typography variant="overline">{this.state.username}</Typography>
                         </Grid>
                         <Grid item>
-                            <Button onClick={this.handleLogout} color="inherit">Logout</Button>
+                            {this.props.isLoggedIn ? 
+                                <Button onClick={this.handleLogout} color="inherit">Logout</Button>
+                            :
+                                <Button style={{backgroundColor: '#dd9933', color: 'white'}} onClick={() => this.props.history.push('/login')}>Login</Button>
+                            }
                         </Grid>
                     </Grid> 
                 </Toolbar>
