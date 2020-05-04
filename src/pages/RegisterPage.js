@@ -14,7 +14,7 @@ class LoginPage extends Component {
         password: '',
         full_name: '',
         grade: '',
-        user_type: 'teacher',
+        user_type: 'student',
         redirect: null
     }
 
