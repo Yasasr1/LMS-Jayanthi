@@ -22,7 +22,7 @@ class App extends Component {
       <Route path="/" exact component={StudentDash}/>
       <Route path="/login" exact component={LoginPage}/>
       <Route path="/register" component={RegisterPage}/>
-      <Route path="/dashboard" render={() => <h1>Not Found</h1>} />
+      <Route path="/dashboard" component={TeacherDash} />
     </Switch>
 
     if(this.props.uid && this.props.userType === 'teacher') {

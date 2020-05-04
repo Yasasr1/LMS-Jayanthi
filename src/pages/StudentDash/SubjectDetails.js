@@ -61,7 +61,7 @@ class SubjectDetails extends Component {
                 })
             }
             topics = this.props.subject.topics.map(((topic, index) => {
-                return <SubjectItem userType={this.props.userType} key={topic.topic} title={topic.topic} videos={topic.videos} files={topic.files} topicIndex={index}/>
+                return <SubjectItem userType={this.props.userType} key={index} title={topic.topic} videos={topic.videos} files={topic.files} topicIndex={index}/>
             }))
         }
         

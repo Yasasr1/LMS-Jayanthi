@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Paper, Typography, Divider, Button, Grid, Modal, Backdrop, Fade, TextField, List}  from '@material-ui/core';
+import { Paper, Typography, Divider, Button, Grid, Modal, Backdrop, Fade, TextField, List, LinearProgress}  from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ReactPlayer from "react-player";
 import { connect } from 'react-redux';
@@ -15,7 +15,8 @@ class SubjectItem extends Component {
         docModal: false,
         NewVideoIndex: 0,
         newFilePathIndex: 0,
-        selectedFile: null
+        selectedFile: null,
+        uploadProgress: 0
     }
 
     componentDidMount() {
@@ -82,7 +83,8 @@ class SubjectItem extends Component {
             
           return ( 
             <div> 
-              <h2>File Details:</h2> 
+              <h3>File Details:</h3>
+              <br/>
               <p>File Name: {this.state.selectedFile.name}</p> 
               <p>File Type: {this.state.selectedFile.type}</p> 
               <p> 
@@ -102,48 +104,80 @@ class SubjectItem extends Component {
     }
 
     uploadFileHandler = () => {
-        //console.log('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex )
-        const storageRef = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name)
-        .put(this.state.selectedFile).then((res) => {
-            //console.log(res);
-            const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name;
-            //console.log(filePath);
-            fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
-                path: filePath,
-                name: this.state.selectedFile.name
-            }).then(res => {
-                alert("file uploaded successfully");
-                this.setState({
-                    docModal: false
+        if(this.state.selectedFile === null) {
+            alert("Please select a file first!");
+        }
+        else {
+            /*const storageRef = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name)
+            .put(this.state.selectedFile).then((res) => {
+                const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name;
+                fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
+                    path: filePath,
+                    name: this.state.selectedFile.name
+                }).then(res => {
+                    alert("file uploaded successfully");
+                    this.setState({
+                        docModal: false
+                    })
+                    window.location.reload(true);
                 })
-                window.location.reload(true);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+                .catch(err => {
+                    console.log(err);
+                })
 
-        }).catch((err) => {
-            alert("Error: Upload failed!");
-        });
+            }).catch((err) => {
+                alert("Error: Upload failed!");
+            });*/
+            const uploadTask = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name)
+            .put(this.state.selectedFile);
+
+            uploadTask.on('state_changed',(snapshot) => {
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                this.setState({uploadProgress: progress});
+            }, (error) => {
+                alert("upload failed");
+            }, () => {
+                //this.setState({uploadProgress: 0})
+                //alert("upload complete");
+                const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name;
+                fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
+                    path: filePath,
+                    name: this.state.selectedFile.name
+                }).then(res => {
+                    alert("Upload complete!");
+                    this.setState({
+                        docModal: false,
+                        selectedFile: null,
+                        uploadProgress: 0
+                    })
+                    window.location.reload(true);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            })
+        }
+        
     }
+
 
     //console.log(props.videos)
     render(){
-        let videos = null;
+        let videos = <p>No Youtube videos yet...</p>;
         if(this.props.videos) {
             if(!this.state.NewVideoIndex){
                 this.setState({
                     NewVideoIndex: this.props.videos.length
                 })
             }
-            videos = this.props.videos.map((video) => {
-                return <ReactPlayer key={video.url} style={{padding: '20px'}}
+            videos = this.props.videos.map((video, index) => {
+                return <ReactPlayer key={index} style={{padding: '20px'}}
                 url={video.url}/>
             
             })
         }
 
-        let files = <p>No files...</p>;
+        let files = <p>No files yet...</p>;
         if(this.props.files) {
             if(!this.state.newFilePathIndex){
                 this.setState({
@@ -152,7 +186,7 @@ class SubjectItem extends Component {
             }
             files = this.props.files.map((file) => {
                 console.log(file.name)
-                return <FileInfo key={file.path} name={file.name} path={file.path}/>
+                return <FileInfo key={file.name} name={file.name} path={file.path}/>
             })
         }
         return(
@@ -171,7 +205,7 @@ class SubjectItem extends Component {
                         <Typography variant="h6">Videos</Typography>
                     </Grid>
                     <Grid item md={2}>
-                        {this.props.userType === 'teacher' ? <Button onClick={this.handleVideoModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Add Video</Button>
+                        {this.props.userType === 'teacher' ? <Button onClick={this.handleVideoModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Add Youtube Video</Button>
                         : null}
                         <Modal
                             style={{
@@ -190,7 +224,7 @@ class SubjectItem extends Component {
                                 textAlign: 'center',
                                 padding: '20px'
                             }}>
-                                <h5>Add New Video To The Topic</h5>
+                                <h5>Add Youtube Video To The Topic</h5>
                                 <Divider/>
                                 <p>Paste the url of the youtube video you want to add</p>
                                 <TextField onChange={this.setUrl} fullWidth label="Youtube Url"/>
@@ -210,10 +244,10 @@ class SubjectItem extends Component {
                 <br/>
                 <Grid container spacing={1}>
                     <Grid item md={10}>
-                        <Typography variant="h6">Documents</Typography>
+                        <Typography variant="h6">Files</Typography>
                     </Grid>
                     <Grid item md={2}>
-                        {this.props.userType === 'teacher' ? <Button onClick={this.handleDocModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Upload Document</Button> :
+                        {this.props.userType === 'teacher' ? <Button onClick={this.handleDocModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Upload File</Button> :
                         null}
                         <Modal
                             style={{
@@ -232,7 +266,7 @@ class SubjectItem extends Component {
                                 textAlign: 'center',
                                 padding: '20px'
                             }}>
-                                <h5>Add New Document To The Topic</h5>
+                                <h5>Add New File To The Topic</h5>
                                 <Divider/>
                                 <br/>
                                 <Button
@@ -251,6 +285,9 @@ class SubjectItem extends Component {
                                 <Divider/>
                                 <br/>
                                 <Button onClick={this.uploadFileHandler}>Upload</Button>
+                                <br/>
+                                <br/>
+                                <LinearProgress variant="determinate" value={this.state.uploadProgress} />
                             </Paper>
                             </Fade>
                         </Modal>

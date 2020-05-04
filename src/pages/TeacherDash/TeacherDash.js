@@ -69,6 +69,10 @@ class TeacherDash extends Component {
     }
 
     render() {
+        if(this.props.uid === null){
+            this.props.history.replace('/');
+        }
+
         //saving the selected grade and subject to redux
         if(this.state.selectedGrade && this.state.selectedSubject) {
             this.props.setGradeSubject(this.state.selectedGradeIndex, this.state.selectedSubjectIndex);
@@ -160,6 +164,11 @@ class TeacherDash extends Component {
     }
 };
 
+const mapStateToProps = state => {
+    return {
+        uid: state.uid,
+    }
+  }
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -167,4 +176,4 @@ const mapDispatchToProps = dispatch => {
     };
 }
 
-export default connect(null,mapDispatchToProps)(TeacherDash);
+export default connect(mapStateToProps,mapDispatchToProps)(TeacherDash);

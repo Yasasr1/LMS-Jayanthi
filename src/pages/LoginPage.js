@@ -105,9 +105,6 @@ class LoginPage extends Component {
         </form>
       </div>
       <div className="mt-4">
-        <div className="d-flex justify-content-center links text-white">
-          Don't have an account? <Link to="/register">Create an account</Link>
-        </div>
       </div>
     </div>
   </div>

@@ -120,9 +120,26 @@ class StudentDash extends Component {
                    minHeight: '1000px',
                    backgroundColor: '#f5f5f5'
                }}>
-                    {this.state.isSubjectSelected ? <Button onClick={()=> this.setState({isSubjectSelected: false})}>Back</Button> : null}
-                    {!this.state.isSubjectSelected ? headingSection : null}
-                    {this.state.isGradeSelected && !this.state.isSubjectSelected ? <Button onClick={()=> this.setState({isGradeSelected: false})}>Back</Button> : null}
+                    {
+                        this.state.isSubjectSelected 
+                        ? 
+                        <div style={{textAlign: 'center'}}>
+                            <Button style={{backgroundColor:'#074e67', color:'white'}} onClick={()=> this.setState({isSubjectSelected: false})}>Back</Button>
+                        </div> 
+                        : null
+                    }
+                    {
+                        !this.state.isSubjectSelected ? headingSection : null
+                    }
+                    {
+                        this.state.isGradeSelected && !this.state.isSubjectSelected 
+                        ? 
+                        <div style={{textAlign: 'center'}}>
+                            <Button style={{backgroundColor:'#074e67', color:'white'}} onClick={()=> this.setState({isGradeSelected: false})}>Back</Button> 
+                        </div>
+                        : 
+                        null
+                    }
                     <br/>
                     <Divider/>
                     <br/>
