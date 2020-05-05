@@ -23,6 +23,7 @@ class TeacherDash extends Component {
 
     componentDidMount() {
         
+            fire.analytics();
             fire.database().ref('/subject').on('value',(snapshot) => {
                 const subs = snapshot.val()
                 if(subs != null){
