@@ -91,17 +91,13 @@ class UpdateName extends Component {
     </Modal>
 
         return(
-            <Grid container style={{textAlign: 'center'}}>
-                <Grid item md={12}>
-                    <h4>{this.state.currentName}</h4>
-                    <br/>
-                    <br/>
-                </Grid>
-                <Grid item md={12}>
-                    <Button onClick={this.openModal} varient="contained" color="primary">Update username</Button>
-                    {modal}
-                </Grid>
-            </Grid>
+            <div>
+                <h6>{this.state.currentName}</h6>
+                
+                <Button onClick={this.openModal} varient="contained" color="primary">Update username</Button>
+                {modal}
+            </div>
+               
         );
     }
 };

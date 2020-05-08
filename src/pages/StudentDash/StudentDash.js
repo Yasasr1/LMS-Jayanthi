@@ -117,7 +117,7 @@ class StudentDash extends Component {
                 <Header {...this.props}/>
                 {redirect}
                 <div style={{
-                   padding: '50px',
+                   padding: '20px',
                    minHeight: '1000px',
                    backgroundColor: '#f5f5f5'
                }}>
@@ -164,13 +164,13 @@ class StudentDash extends Component {
                 }}>
                         <Grid container>
                             <Grid item md={12}>
-                                <Typography style={{float:'left'}} variant="h5">Contact Us</Typography>
+                                <Typography variant="h5">Contact Us</Typography>
                             </Grid>
                             <Grid item md={12}>
-                                <Button style={{float:'left'}} startIcon={<FacebookIcon/>}>Facebook</Button>
+                                <Button startIcon={<FacebookIcon/>}>Facebook</Button>
                             </Grid>
                             <Grid item md={12}>
-                                <p>Name | All Rights Reserved</p>
+                            <p style={{color: 'white'}}>FlexLabs | All Rights Reserved</p>
                             </Grid>
                         </Grid>
                 </footer>

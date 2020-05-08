@@ -112,31 +112,49 @@ class TeacherDash extends Component {
             <div>
                 <Header isLoggedIn={true} {...this.props}/>
                 <div style={{
-                   padding: '50px',
-                   minHeight: '1000px'
+                   padding: '20px',
+                   minHeight: '1000px',
+                   backgroundColor: '#f5f5f5'
                }}>
-                    {this.state.isSubjectSelected ? <Button onClick={()=> this.setState({isSubjectSelected: false})}>Back</Button> : null}
-                    {!this.state.isSubjectSelected ? <Typography variant="h3" gutterBottom>Dashboard</Typography> : null}
-                    {this.state.isGradeSelected && !this.state.isSubjectSelected ? <Button onClick={()=> this.setState({isGradeSelected: false})}>Back</Button> : null}
+                    {
+                        this.state.isSubjectSelected 
+                        ? 
+                        <div style={{textAlign: 'center'}}>
+                            <Button style={{backgroundColor:'#074e67', color:'white'}} onClick={()=> this.setState({isSubjectSelected: false})}>Back</Button>
+                        </div>
+                        : 
+                        null
+                    }
+                    {
+                        !this.state.isSubjectSelected 
+                        ? 
+                        <div style={{textAlign: 'center'}}>
+                            <Typography variant="h3" gutterBottom>Dashboard</Typography>
+                            <Typography variant="caption">Welcome!</Typography>
+                            <br/>
+                            <UpdateName/>
+                        </div>
+                        : 
+                        null
+                    }
+                    {
+                        this.state.isGradeSelected && !this.state.isSubjectSelected 
+                        ? 
+                        <div style={{textAlign: 'center'}}>
+                            <Button style={{backgroundColor:'#074e67', color:'white'}} onClick={()=> this.setState({isGradeSelected: false})}>Back</Button>
+                        </div>
+                        : 
+                        null
+                    }
                     <br/>
                     <Divider/>
                     <br/>
-                    <Grid container spacing={0}>
-                        <Grid item md={9}>
-                            { !this.state.isSubjectSelected ? 
-                            <GridList cols={3}>
-                                {data}
-                            </GridList>
-                            : <div>{data}</div>
-                            }
-                        </Grid>
-                        <Grid item md={1}>
-                            <Divider orientation="vertical"/>
-                        </Grid>
-                        <Grid item md={1}>
-                            <UpdateName/>
-                        </Grid>
-                    </Grid>
+                    { !this.state.isSubjectSelected ? 
+                    <GridList cols={3}>
+                        {data}
+                    </GridList>
+                    : <div>{data}</div>
+                    } 
                     <br/>
                </div>
                <footer style={{
@@ -156,7 +174,7 @@ class TeacherDash extends Component {
                                 <Button style={{float:'left'}} startIcon={<FacebookIcon/>}>Facebook</Button>
                             </Grid>
                             <Grid item md={12}>
-                                <p>Name | All Rights Reserved</p>
+                                <p style={{color: 'white'}}>FlexLabs | All Rights Reserved</p>
                             </Grid>
                         </Grid>
                 </footer>

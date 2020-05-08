@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Paper, Typography, Divider, Button, Grid, Modal, Backdrop, Fade, TextField, List, LinearProgress}  from '@material-ui/core';
+import { Paper, Typography, Divider, Button, Grid, Modal, Backdrop, Fade, TextField, List}  from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ReactPlayer from "react-player";
 import { connect } from 'react-redux';
+import windowSize from 'react-window-size';
 
 import fire from '../components/firebase';
 import FileInfo from './FileInfo';
+import SelectedFileInfo from '../components/SelectedFileInfo';
 
 
 class SubjectItem extends Component {
@@ -15,8 +17,8 @@ class SubjectItem extends Component {
         docModal: false,
         NewVideoIndex: 0,
         newFilePathIndex: 0,
-        selectedFile: null,
-        uploadProgress: 0
+        selectedFiles: [],
+        uploadProgress: []
     }
 
     componentDidMount() {
@@ -71,8 +73,43 @@ class SubjectItem extends Component {
     }
 
     selectFileHandler = (event) => {
+        let files = this.state.selectedFiles;
+        let progress = this.state.uploadProgress;
+        let isFileDuplicated = false;
+        console.log(files);
+
+        if(files.length > 0) {
+            files.forEach((file) => {
+                if(file.name === event.target.files[0].name){
+                    isFileDuplicated = true;
+                }
+            })
+        }
+        console.log(isFileDuplicated);
+        if(!isFileDuplicated){
+            files.push(event.target.files[0]);
+            progress.push(0);
+            console.log(files);
+
+            this.setState({
+                selectedFiles: files,
+                uploadProgress: progress
+            })
+        } else {
+            alert("File already selected!");
+        }
+        
+    }
+
+    deleteSelectedFile = (name) => {
+        let files = this.state.selectedFiles;
+        let index = files.findIndex((file) => {
+            return file.name === name
+        });
+
+        files.splice(index,1);
         this.setState({
-            selectedFile: event.target.files[0]
+            selectedFiles: files
         })
     }
 
@@ -103,65 +140,164 @@ class SubjectItem extends Component {
         } 
     }
 
-    uploadFileHandler = () => {
-        if(this.state.selectedFile === null) {
-            alert("Please select a file first!");
-        }
-        else {
-            /*const storageRef = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name)
-            .put(this.state.selectedFile).then((res) => {
-                const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name;
-                fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
-                    path: filePath,
-                    name: this.state.selectedFile.name
-                }).then(res => {
-                    alert("file uploaded successfully");
-                    this.setState({
-                        docModal: false
-                    })
-                    window.location.reload(true);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-
-            }).catch((err) => {
-                alert("Error: Upload failed!");
-            });*/
-            const uploadTask = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name)
-            .put(this.state.selectedFile);
+    //not used 
+    uploadOneItem = (file) => {
+        /*const initialFilePathIndex = this.state.newFilePathIndex;
+        const uploadTask = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name)
+            .put(file);
 
             uploadTask.on('state_changed',(snapshot) => {
                 var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 this.setState({uploadProgress: progress});
             }, (error) => {
-                alert("upload failed");
+                console.log(error);
             }, () => {
-                //this.setState({uploadProgress: 0})
-                //alert("upload complete");
-                const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + this.state.selectedFile.name;
+                const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name;
                 fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
                     path: filePath,
-                    name: this.state.selectedFile.name
+                    name: file.name
                 }).then(res => {
-                    alert("Upload complete!");
                     this.setState({
-                        docModal: false,
-                        selectedFile: null,
-                        uploadProgress: 0
+                        uploadProgress: 0,
+                        newFilePathIndex: initialFilePathIndex + 1
                     })
-                    window.location.reload(true);
                 })
                 .catch(err => {
                     console.log(err);
                 })
+            })*/
+        
+            const initialFilePathIndex = this.state.newFilePathIndex;
+            return fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name)
+                .put(file).then(res => {
+                    const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name;
+                    fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
+                        path: filePath,
+                        name: file.name
+                    }).then(res => {
+                        this.setState({
+                            uploadProgress: 0,
+                            newFilePathIndex: initialFilePathIndex + 1
+                        })
+                    })
+                    console.log("one done!")
+                }).catch(err => {
+                    console.log(err);
+                });
+
+                /*uploadTask.on('state_changed',(snapshot) => {
+                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    this.setState({uploadProgress: progress});
+                }, (error) => {
+                    console.log(error);
+                }, () => {
+                    const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name;
+                    fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
+                        path: filePath,
+                        name: file.name
+                    }).then(res => {
+                        this.setState({
+                            uploadProgress: 0,
+                            newFilePathIndex: initialFilePathIndex + 1
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                })*/
+        
+    }
+
+    uploadFileHandler = () => {
+        if(this.state.selectedFiles.length === 0) {
+            alert("Please select a file first!");
+        }
+        else {
+            const promises = [];
+            this.state.selectedFiles.forEach((file, index) => {
+                const initialFilePathIndex = this.state.newFilePathIndex;
+                let uploadprogress = this.state.uploadProgress;
+                const uploadTask = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name).put(file);
+
+                promises.push(uploadTask);
+                uploadTask.on('state_changed',(snapshot) => {
+                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    uploadprogress[index] = progress
+                    this.setState({uploadProgress: uploadprogress});
+                }, (error) => {
+                    console.log(error);
+                }, () => {
+                    const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name;
+                    fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
+                        path: filePath,
+                        name: file.name
+                    }).then(res => {
+                        this.setState({
+                            newFilePathIndex: initialFilePathIndex + 1
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                })
+            });
+
+            Promise.all(promises)
+            .then(() => {
+                alert("All files uploaded successfully");
+                this.setState({
+                    docModal: false,
+                    selectedFiles: [],
+                    uploadProgress: 0
+                })
+                window.location.reload(true);
             })
+            .catch(err => {
+                console.log(err);
+            })
+
+            /*for(let i=0; i < this.state.selectedFiles.length; i++) {
+                this.uploadOneItem(this.state.selectedFiles[i]);
+            }
+            alert("All files uploaded successfully");
+                this.setState({
+                    docModal: false,
+                    selectedFiles: [],
+                    uploadProgress: 0
+                })
+                window.location.reload(true);*/
+           /*Promise.all(
+                this.state.selectedFiles.forEach((file) => {
+                    this.uploadOneItem(file);
+                })
+           ).then(res => {
+                alert("All files uploaded successfully");
+                this.setState({
+                    docModal: false,
+                    selectedFiles: [],
+                    uploadProgress: 0
+                })
+                window.location.reload(true);
+           }).catch(error => {
+                console.log(error.message)
+           })*/
+           
+           /*.then((res) => {
+            alert("All files uploaded successfully");
+            this.setState({
+                docModal: false,
+                selectedFiles: [],
+                uploadProgress: 0
+            })
+            window.location.reload(true);
+          })
+          .catch((error) => {
+            console.log(`Some failed to upload: `, error.message)
+          });*/
         }
         
     }
 
-
-    //console.log(props.videos)
     render(){
         let videos = <p>No Youtube videos yet...</p>;
         if(this.props.videos) {
@@ -171,7 +307,7 @@ class SubjectItem extends Component {
                 })
             }
             videos = this.props.videos.map((video, index) => {
-                return <ReactPlayer key={index} style={{padding: '20px'}}
+                return <ReactPlayer width={this.props.windowWidth * 0.8} key={index} style={{padding: '20px'}}
                 url={video.url}/>
             
             })
@@ -189,6 +325,13 @@ class SubjectItem extends Component {
                 return <FileInfo key={file.name} name={file.name} path={file.path}/>
             })
         }
+
+        let selectedFiles = <p>No files selected</p>;
+        if(this.state.selectedFiles.length > 0) {
+            selectedFiles = this.state.selectedFiles.map((file, index) => {
+                return <SelectedFileInfo progress={this.state.uploadProgress[index]} key={file.name} deleteSelectedFile={(fileName) => this.deleteSelectedFile(fileName)} fileName={file.name}/>
+            });
+        }
         return(
             <Paper style={{
                 padding: '20px',
@@ -196,16 +339,16 @@ class SubjectItem extends Component {
                 overflow: 'auto'
     
             }}>
-                <Typography variant="h5">{this.props.title}</Typography>
+                <Typography style={{fontSize: '18'}} variant="h5">{this.props.title}</Typography>
                 <br/>
                 <Divider/>
                 <br/>
                 <Grid container spacing={1}>
                     <Grid item md={10}>
-                        <Typography variant="h6">Videos</Typography>
+                        <Typography style={{fontSize: '12'}} variant="h6">Videos</Typography>
                     </Grid>
                     <Grid item md={2}>
-                        {this.props.userType === 'teacher' ? <Button onClick={this.handleVideoModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Add Youtube Video</Button>
+                        {this.props.userType === 'teacher' ? <Button size="small" onClick={this.handleVideoModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Add Youtube Video</Button>
                         : null}
                         <Modal
                             style={{
@@ -244,10 +387,10 @@ class SubjectItem extends Component {
                 <br/>
                 <Grid container spacing={1}>
                     <Grid item md={10}>
-                        <Typography variant="h6">Files</Typography>
+                        <Typography style={{fontSize: '12'}} variant="h6">Files</Typography>
                     </Grid>
                     <Grid item md={2}>
-                        {this.props.userType === 'teacher' ? <Button onClick={this.handleDocModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Upload File</Button> :
+                        {this.props.userType === 'teacher' ? <Button size="small" onClick={this.handleDocModalOpen} style={{backgroundColor: 'green', color: 'white'}} startIcon={<AddIcon />}>Upload Files</Button> :
                         null}
                         <Modal
                             style={{
@@ -266,14 +409,14 @@ class SubjectItem extends Component {
                                 textAlign: 'center',
                                 padding: '20px'
                             }}>
-                                <h5>Add New File To The Topic</h5>
+                                <h5>Add New Files To The Topic</h5>
                                 <Divider/>
                                 <br/>
                                 <Button
                                 variant="contained"
                                 component="label"
                                 >
-                                Choose File
+                                Choose Files
                                 <input
                                     type="file"
                                     onChange={this.selectFileHandler}
@@ -281,13 +424,17 @@ class SubjectItem extends Component {
                                 />
                                 </Button>
                                 <br/>
-                                {this.fileData()}
+                                <br/>
+                                <div style={{backgroundColor: 'grey', minHeight: '100px', padding: '25px'}}>
+                                    {selectedFiles}
+                                </div>
                                 <Divider/>
+                                <br/>
+                                <p>Select one or more files to upload</p>
                                 <br/>
                                 <Button onClick={this.uploadFileHandler}>Upload</Button>
                                 <br/>
                                 <br/>
-                                <LinearProgress variant="determinate" value={this.state.uploadProgress} />
                             </Paper>
                             </Fade>
                         </Modal>
@@ -319,4 +466,4 @@ const mapStateToProps = state => {
 
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(SubjectItem);
+export default connect(mapStateToProps,mapDispatchToProps)(windowSize(SubjectItem));
