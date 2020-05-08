@@ -18,7 +18,8 @@ class SubjectItem extends Component {
         NewVideoIndex: 0,
         newFilePathIndex: 0,
         selectedFiles: [],
-        uploadProgress: []
+        uploadProgress: [],
+        databasePaths: []
     }
 
     componentDidMount() {
@@ -185,26 +186,6 @@ class SubjectItem extends Component {
                     console.log(err);
                 });
 
-                /*uploadTask.on('state_changed',(snapshot) => {
-                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    this.setState({uploadProgress: progress});
-                }, (error) => {
-                    console.log(error);
-                }, () => {
-                    const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name;
-                    fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
-                        path: filePath,
-                        name: file.name
-                    }).then(res => {
-                        this.setState({
-                            uploadProgress: 0,
-                            newFilePathIndex: initialFilePathIndex + 1
-                        })
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
-                })*/
         
     }
 
@@ -213,12 +194,14 @@ class SubjectItem extends Component {
             alert("Please select a file first!");
         }
         else {
-            const promises = [];
+            let promises = [];
+            let databasePaths = [];
             let initialFilePathIndex = 0;
             this.state.selectedFiles.forEach((file, index) => {
                 let uploadprogress = this.state.uploadProgress;
                 const uploadTask = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name).put(file);
 
+                
                 promises.push(uploadTask);
                 uploadTask.on('state_changed',(snapshot) => {
                     var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -227,71 +210,47 @@ class SubjectItem extends Component {
                 }, (error) => {
                     console.log(error);
                 }, () => {
-                    const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name;
-                    fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + initialFilePathIndex ).set({
-                        path: filePath,
-                        name: file.name
-                    }).then(res => {
-                        initialFilePathIndex++;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
+                    let newPath = {
+                        path: '/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + initialFilePathIndex,
+                        name : file.name
+                    }
+                    databasePaths.push(newPath);
+                    initialFilePathIndex++;
+                   
                 })
             });
 
+
             Promise.all(promises)
             .then(() => {
-                alert("All files uploaded successfully");
-                this.setState({
-                    docModal: false,
-                    selectedFiles: [],
-                    uploadProgress: 0
+                let lenght = databasePaths.length
+                databasePaths.forEach((pt, index)=> {
+                    const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + pt.name;
+                        fire.database().ref(pt.path).set({
+                            path: filePath,
+                            name: pt.name
+                        }).then(res => {
+                            if(index === lenght-1){
+                                alert("All files uploaded successfully");
+                                this.setState({
+                                    docModal: false,
+                                    selectedFiles: [],
+                                    uploadProgress: 0
+                                })
+                                window.location.reload(true);
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
                 })
-                window.location.reload(true);
+
             })
             .catch(err => {
                 console.log(err);
             })
 
-            /*for(let i=0; i < this.state.selectedFiles.length; i++) {
-                this.uploadOneItem(this.state.selectedFiles[i]);
-            }
-            alert("All files uploaded successfully");
-                this.setState({
-                    docModal: false,
-                    selectedFiles: [],
-                    uploadProgress: 0
-                })
-                window.location.reload(true);*/
-           /*Promise.all(
-                this.state.selectedFiles.forEach((file) => {
-                    this.uploadOneItem(file);
-                })
-           ).then(res => {
-                alert("All files uploaded successfully");
-                this.setState({
-                    docModal: false,
-                    selectedFiles: [],
-                    uploadProgress: 0
-                })
-                window.location.reload(true);
-           }).catch(error => {
-                console.log(error.message)
-           })*/
-           
-           /*.then((res) => {
-            alert("All files uploaded successfully");
-            this.setState({
-                docModal: false,
-                selectedFiles: [],
-                uploadProgress: 0
-            })
-            window.location.reload(true);
-          })
-          .catch((error) => {
-            console.log(`Some failed to upload: `, error.message)
-          });*/
+          
         }
         
     }
