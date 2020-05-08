@@ -214,8 +214,8 @@ class SubjectItem extends Component {
         }
         else {
             const promises = [];
+            let initialFilePathIndex = 0;
             this.state.selectedFiles.forEach((file, index) => {
-                const initialFilePathIndex = this.state.newFilePathIndex;
                 let uploadprogress = this.state.uploadProgress;
                 const uploadTask = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name).put(file);
 
@@ -228,13 +228,11 @@ class SubjectItem extends Component {
                     console.log(error);
                 }, () => {
                     const filePath = '/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name;
-                    fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + this.state.newFilePathIndex ).set({
+                    fire.database().ref('/subject/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/topics/' + this.props.topicIndex + '/files/' + initialFilePathIndex ).set({
                         path: filePath,
                         name: file.name
                     }).then(res => {
-                        this.setState({
-                            newFilePathIndex: initialFilePathIndex + 1
-                        })
+                        initialFilePathIndex++;
                     })
                     .catch(err => {
                         console.log(err);
