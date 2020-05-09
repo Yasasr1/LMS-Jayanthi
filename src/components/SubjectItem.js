@@ -114,33 +114,6 @@ class SubjectItem extends Component {
         })
     }
 
-    //display selected file data
-    fileData = () => { 
-     
-        if (this.state.selectedFile) { 
-            
-          return ( 
-            <div> 
-              <h3>File Details:</h3>
-              <br/>
-              <p>File Name: {this.state.selectedFile.name}</p> 
-              <p>File Type: {this.state.selectedFile.type}</p> 
-              <p> 
-                Last Modified:{" "} 
-                {this.state.selectedFile.lastModifiedDate.toDateString()} 
-              </p> 
-            </div> 
-          ); 
-        } else { 
-          return ( 
-            <div> 
-              <br /> 
-              <h4>Choose before Pressing the Upload button</h4> 
-            </div> 
-          ); 
-        } 
-    }
-
     //not used 
     uploadOneItem = (file) => {
         /*const initialFilePathIndex = this.state.newFilePathIndex;
@@ -196,7 +169,7 @@ class SubjectItem extends Component {
         else {
             let promises = [];
             let databasePaths = [];
-            let initialFilePathIndex = 0;
+            let initialFilePathIndex = this.state.newFilePathIndex;
             this.state.selectedFiles.forEach((file, index) => {
                 let uploadprogress = this.state.uploadProgress;
                 const uploadTask = fire.storage().ref('/Documents/' + this.props.selectedGrade + '/' + this.props.selectedSubject + '/' + this.props.topicIndex + '/' + file.name).put(file);
