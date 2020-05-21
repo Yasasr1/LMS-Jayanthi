@@ -9,6 +9,7 @@ import SubjectTile from '../../components/SubjectTile';
 import SubjectDetails from '../StudentDash/SubjectDetails';
 import fire from '../../components/firebase';
 import logo from '../../assets/images/logo.png';
+import Notice from '../../components/Notice';
 
 
 class StudentDash extends Component {
@@ -69,6 +70,10 @@ class StudentDash extends Component {
   
     }
 
+    openFacebook = () => {
+        window.open("https://www.facebook.com/flexlabsSriLanka");
+    }
+
     render() {
         let redirect = null;
         if(this.props.isLoggedin) {
@@ -81,6 +86,9 @@ class StudentDash extends Component {
             <Typography variant="h4">Jayanthi Vidyalaya, Colombo</Typography>
             <br/>
             <Typography variant="overline">Learning Management System</Typography>
+            <br/>
+            <Notice/>
+            <br/>
         </div>
 
         let data = <div style={{display: 'flex'}}>
@@ -162,17 +170,13 @@ class StudentDash extends Component {
                     fontWeight: 'bold',
                     padding: '10px'
                 }}>
-                        <Grid container>
-                            <Grid item md={12}>
-                                <Typography variant="h5">Contact Us</Typography>
-                            </Grid>
-                            <Grid item md={12}>
-                                <Button startIcon={<FacebookIcon/>}>Facebook</Button>
-                            </Grid>
-                            <Grid item md={12}>
+                        <div>
+                            <Typography style={{color: 'white'}} variant="h5">Contact Us</Typography>
+                            <Typography style={{color: 'white'}} variant="body">0717380767</Typography>
+                            <br/>
+                            <Button onClick={this.openFacebook} style={{color: 'white'}} startIcon={<FacebookIcon/>}>Facebook</Button>
                             <p style={{color: 'white'}}>FlexLabs | All Rights Reserved</p>
-                            </Grid>
-                        </Grid>
+                        </div>
                 </footer>
             </div>
         );
