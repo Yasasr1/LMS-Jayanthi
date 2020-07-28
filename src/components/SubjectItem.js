@@ -237,7 +237,7 @@ class SubjectItem extends Component {
                 })
             }
             videos = this.props.videos.map((video, index) => {
-                return <ReactPlayer width={this.props.windowWidth * 0.8} key={index} style={{padding: '20px'}}
+                return <ReactPlayer width={this.props.windowWidth > 600 ? this.props.windowWidth * 0.7 : this.props.windowWidth * 0.85} height={this.props.windowWidth > 600 ? 600 : 300} key={index} style={{padding: '20px'}}
                 url={video.url}/>
             
             })

@@ -6,7 +6,9 @@ const SubjectTile = (props) => {
     return(
         <Card variant="elevation" style={{
             maxWidth: '150px',
+            height: '100px',
             overflow: 'auto',
+            margin: 'auto',
             textAlign: 'center',
             backgroundImage: 'linear-gradient(to bottom right, #8a2a19, #e09200)',
             cursor: 'pointer',
